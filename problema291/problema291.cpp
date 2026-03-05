@@ -23,10 +23,11 @@ int main()
 
         while (ss >> word) // separa por espacios automáticamente
         {
-            transform(word.begin(), word.end(), word.begin(), ::tolower);
 
             if (word.size() > 2)
             {
+                transform(word.begin(), word.end(), word.begin(), ::tolower);
+
                 if (!words.count(word))
                     words[word] = {nLine};
                 else if (words[word].back() < nLine)
