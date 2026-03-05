@@ -17,14 +17,14 @@ class Node
     Node *next;
 
 public:
-    Node::Node(WordInfo newWL)
+    Node(WordInfo newWL)
     {
         wl = newWL;
         prev = nullptr;
         next = nullptr;
     }
 
-    Node::~Node()
+    ~Node()
     {
         delete next;
     }
@@ -32,38 +32,68 @@ public:
     static ::Node *sortedInsert(Node *head, WordInfo wi)
     {
         Node *newNode = new Node(wi);
+        // The list is empty
         if (head == nullptr)
             return newNode;
-
+        // The new word is minor than the actual head
         if (wi.word < head->wl.word)
         {
             newNode->next = head;
             head->prev = newNode;
             return newNode;
         }
-        // Traverse the list to find correct position
-        Node *curr = head;
-        while (curr->next != nullptr && curr->next->wl.word < wi.word)
+        // The new word is equal to the head
+        if (wi.word == head->wl.word)
         {
-            curr = curr->next;
+            int newLine = wi.wLines.front(); // el número de línea nuevo
+            if (head->wl.wLines.back() != newLine)
+            {
+                head->wl.wLines.emplace_back(newLine);
+            }
         }
-        if (curr->wl.word == wi.word)
-        {
-            cout << "Inserting line " << wi.wLines.front() << " in " << curr->wl.word << "\n";
-            curr->wl.wLines.push_back(wi.wLines.front());
-        }
+        //The new word is greater than the head
         else
         {
-            cout << "Inserting " << wi.word << " after " << curr->wl.word << "\n";
-
-            // Insert the new node in the correct position
-            newNode->next = curr->next;
+            // Traverse the list to find correct position
+            Node *curr = head;
+            while (curr->next != nullptr && curr->next->wl.word < wi.word)
+            {
+                curr = curr->next;
+            }
             if (curr->next != nullptr)
             {
-                curr->next->prev = newNode;
+                if (curr->next->wl.word == wi.word)
+                {
+                    // cout << "word is already in: " + wi.word + "\n";
+                    int newLine = wi.wLines.front(); // el número de línea nuevo
+                    if (curr->next->wl.wLines.back() != newLine)
+                    {
+                        curr->next->wl.wLines.emplace_back(newLine);
+                    }
+                }
+                else
+                {
+                    // cout << "insert in between: " + wi.word + "\n";
+                    newNode->next = curr->next;
+                    if (curr->next != nullptr)
+                    {
+                        curr->next->prev = newNode;
+                    }
+                    curr->next = newNode;
+                    newNode->prev = curr;
+                }
             }
-            curr->next = newNode;
-            newNode->prev = curr;
+            else
+            { // Insert the new node in the correct position
+                // cout << "insert at the end: " << wi.word << "\n";
+                newNode->next = curr->next;
+                if (curr->next != nullptr)
+                {
+                    curr->next->prev = newNode;
+                }
+                curr->next = newNode;
+                newNode->prev = curr;
+            }
         }
         return head;
     }
@@ -72,9 +102,13 @@ public:
     {
         while (curr != nullptr)
         {
-            cout << curr->wl.word << " " << curr->wl.wLines.front() << "\n";
+            cout << curr->wl.word << " ";
+            for (int l : curr->wl.wLines)
+                cout << l << " ";
+            cout << "\n";
             curr = curr->next;
         }
+        cout << "----\n";
     }
 };
 // double linked list with struct or whatever but using classes
@@ -91,29 +125,26 @@ int main()
     "word2": [line1, line2]
     ]
     */
-    cin >> nFilas;
-    int nLine = 0;
+    int nLine = 1;
     string line;
     getline(cin, line);
     bool firstWord = true;
     Node *head = nullptr;
+    getline(cin, line);
+
     while (line != "0")
     {
-        nLine++;
         string temp;
+        // cout << "linea: " << nLine << endl;
 
-        for (char c : line)
+        auto insertWord = [&](const string &w)
         {
-            if (c != ' ')
-            {
-                c = tolower(c);
-                temp += c;
-            }
-            else if (temp.size() > 2)
+            if (w.size() > 2)
             {
                 WordInfo tempWI;
                 tempWI.wLines.push_front(nLine);
-                tempWI.word = temp;
+                tempWI.word = w;
+                // cout << "palabra: " + w + "\n";
                 if (firstWord)
                 {
                     head = new Node(tempWI);
@@ -123,12 +154,24 @@ int main()
                 {
                     head = Node::sortedInsert(head, tempWI);
                 }
-                temp = "";
-                head->printList(head);
+            }
+        };
+
+        for (char c : line)
+        {
+            if (c != ' ')
+            {
+                temp += tolower(c);
             }
             else
+            {
+                insertWord(temp);
                 temp = "";
+            }
         }
+        insertWord(temp); // ✅ última palabra
+        nLine++;
+        // head->printList(head);
 
         getline(cin, line);
     }
