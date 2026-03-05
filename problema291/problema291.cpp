@@ -1,6 +1,7 @@
 #include <iostream>
 #include <list>
 #include <algorithm>
+#include <string>
 
 using namespace std;
 struct WordInfo
@@ -16,18 +17,22 @@ class Node
     Node *next;
 
 public:
-    Node(WordInfo newWL)
+    Node::Node(WordInfo newWL)
     {
         wl = newWL;
         prev = nullptr;
         next = nullptr;
     }
 
-public:
-    Node *sortedInsert(Node *head, WordInfo wi)
+    Node::~Node()
+    {
+        delete next;
+    }
+
+    static ::Node *sortedInsert(Node *head, WordInfo wi)
     {
         Node *newNode = new Node(wi);
-        if (head = nullptr)
+        if (head == nullptr)
             return newNode;
 
         if (wi.word < head->wl.word)
@@ -43,9 +48,14 @@ public:
             curr = curr->next;
         }
         if (curr->wl.word == wi.word)
+        {
+            cout << "Inserting line " << wi.wLines.front() << " in " << curr->wl.word << "\n";
             curr->wl.wLines.push_back(wi.wLines.front());
+        }
         else
         {
+            cout << "Inserting " << wi.word << " after " << curr->wl.word << "\n";
+
             // Insert the new node in the correct position
             newNode->next = curr->next;
             if (curr->next != nullptr)
@@ -85,8 +95,8 @@ int main()
     int nLine = 0;
     string line;
     getline(cin, line);
-    bool firstWord = false;
-    Node* head;
+    bool firstWord = true;
+    Node *head = nullptr;
     while (line != "0")
     {
         nLine++;
@@ -105,14 +115,16 @@ int main()
                 tempWI.wLines.push_front(nLine);
                 tempWI.word = temp;
                 if (firstWord)
+                {
                     head = new Node(tempWI);
+                    firstWord = false;
+                }
                 else
                 {
-                    head = sortedInsert(tempWI);
+                    head = Node::sortedInsert(head, tempWI);
                 }
-                cout << "temp is:" << temp << endl;
-
                 temp = "";
+                head->printList(head);
             }
             else
                 temp = "";
@@ -120,5 +132,6 @@ int main()
 
         getline(cin, line);
     }
+    head->printList(head);
     return 0;
 }

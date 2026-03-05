@@ -1,3 +1,8 @@
 #ignore:
 .vscode
 *.exe
+*.obj
+*.o
+*.dll
+*.pdb
+*.ilk
