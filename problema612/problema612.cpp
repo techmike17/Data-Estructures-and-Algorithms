@@ -76,9 +76,9 @@ int numPuntosCirculos(int radio, int x1, int y1, int x2, int y2)
 int main()
 {
     int radio, x2, y2, res = 0;
-    while (1)
+    while (
+        cin >> radio >> x2 >> y2)
     {
-        cin >> radio >> x2 >> y2;
         res = numPuntosCirculos(radio, 0, 0, x2, y2);
         cout << res << "\n";
         res = 0;
