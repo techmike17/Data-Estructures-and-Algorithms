@@ -5,70 +5,70 @@ using namespace std;
 
 double euclideanDistance(int radio, int x1, int y1, int x2, int y2)
 {
-    int first = x1 - x2;
-    int second = y1 - y2;
-    first *= first;
-    second *= second;
-    double distance = sqrt(first + second);
+    double first = (double)(x1 - x2);
+    double second = (double)(y1 - y2);
+    double distance = sqrt(first * first + second * second);
     return distance;
 }
 
 int numPuntosCirculos(int radio, int x1, int y1, int x2, int y2)
 {
     int res = 0;
-    if (radio > 0)
+    double distance = 0;
+    while (radio > 0)
     {
-        double distance = euclideanDistance(radio, x1, y1, x2, y2);
-        res = (distance <= radio) ? 1 : 0;
+        distance = euclideanDistance(radio, 0, 0, x2, y2);
+        if (distance <= radio)
+            res++;
+        if (radio > 1)
+        {
+            int nextX = abs(x2 - radio);
+            int nextY = abs(y2 - radio);
 
-        if (y2 == y1) // The point is on the x axis
-        {
-            if (x2 == x1) // the point is the center of the circle so it will be included only in the first circle
+            if (nextY < nextX)
             {
-                return 1;
+                // next point is up or down
+                if (y2 < 0) // go to down
+                {
+                    y2 = y2 - radio;
+                    y1 = y1 - radio;
+                }
+                else if (y2 > 0) // go to up
+                {
+                    y2 = y2 - radio;
+                    y1 = y1 + radio;
+                }
             }
-            if (x2 > x1)
+            else if (nextY > nextX)
             {
-                res += numPuntosCirculos(radio / 2, x1 + radio, y1, x2, y2);
-            }
-            else if (x2 < x1)
-            {
-                res += numPuntosCirculos(radio / 2, x1 - radio, y1, x2, y2);
-            }
-
-            else if (x2 > x1 + radio) // out of the actual circle
-            {
-                res += numPuntosCirculos(radio / 2, x1 + radio, y1, x2, y2);
-            }
-            else if (x2 < x1 - radio)
-            {
-                res += numPuntosCirculos(radio / 2, x1 - radio, y1, x2, y2);
-            }
-        }
-        else if (y2 > 0) // the point is in the first or second quadrant
-        {
-            if (x2 == 0)
-            {
-            }
-            else if (x2 > 0) // first quadrant
-            {
-            }
-            else //
-            {
-            }
-        }
-        else // the point is in the third or forth quadrant
-        {
-            if (x2 == 0)
-            {
-            }
-            else if (x2 > 0)
-            {
+                // next point is left or right
+                if (x2 < 0) // go to the left
+                {
+                    x2 = x1 + radio;
+                    x1 = x1 - radio;
+                }
+                else if (x2 > 0) // go to the right
+                {
+                    x2 = x2 - radio;
+                    x1 = x1 + radio;
+                }
             }
             else
             {
+                // the point is on a diagonal doesnt matter axis Y or X
+                if (x2 < 0) // go to the left
+                {
+                    x2 = x2 + radio;
+                    x1 = x1 - radio;
+                }
+                else if (x2 > 0) // go to the right
+                {
+                    x2 = x2 - radio;
+                    x1 = x1 + radio;
+                }
             }
         }
+        radio = radio / 2;
     }
     return res;
 }
@@ -79,7 +79,7 @@ int main()
     while (1)
     {
         cin >> radio >> x2 >> y2;
-        res += numPuntosCirculos(radio, 0, 0, x2, y2);
+        res = numPuntosCirculos(radio, 0, 0, x2, y2);
         cout << res << "\n";
         res = 0;
     }
