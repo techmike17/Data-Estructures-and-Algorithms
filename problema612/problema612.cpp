@@ -11,7 +11,7 @@ double euclideanDistance(int radio, int x1, int y1, int x2, int y2)
     return distance;
 }
 
-int numPuntosCirculos(int radio, int x1, int y1, int x2, int y2)
+int numPuntosCirculos(int radio, int x2, int y2)
 {
     int res = 0;
     double distance = 0;
@@ -31,12 +31,10 @@ int numPuntosCirculos(int radio, int x1, int y1, int x2, int y2)
                 if (y2 < 0) // go to down
                 {
                     y2 = y2 - radio;
-                    y1 = y1 - radio;
                 }
                 else if (y2 > 0) // go to up
                 {
                     y2 = y2 - radio;
-                    y1 = y1 + radio;
                 }
             }
             else if (nextY > nextX)
@@ -44,13 +42,11 @@ int numPuntosCirculos(int radio, int x1, int y1, int x2, int y2)
                 // next point is left or right
                 if (x2 < 0) // go to the left
                 {
-                    x2 = x1 + radio;
-                    x1 = x1 - radio;
+                    x2 = x2 + radio;
                 }
                 else if (x2 > 0) // go to the right
                 {
                     x2 = x2 - radio;
-                    x1 = x1 + radio;
                 }
             }
             else
@@ -59,13 +55,13 @@ int numPuntosCirculos(int radio, int x1, int y1, int x2, int y2)
                 if (x2 < 0) // go to the left
                 {
                     x2 = x2 + radio;
-                    x1 = x1 - radio;
                 }
                 else if (x2 > 0) // go to the right
                 {
                     x2 = x2 - radio;
-                    x1 = x1 + radio;
                 }
+                else // center of a circunference
+                    break;
             }
         }
         radio = radio / 2;
@@ -79,7 +75,7 @@ int main()
     while (
         cin >> radio >> x2 >> y2)
     {
-        res = numPuntosCirculos(radio, 0, 0, x2, y2);
+        res = numPuntosCirculos(radio, x2, y2);
         cout << res << "\n";
         res = 0;
     }
