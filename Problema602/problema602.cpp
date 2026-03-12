@@ -20,14 +20,17 @@ int main()
         int d1 = 1;
         int d2 = 1;
         int dias = 1;
-        while (cDia < objetivo)
+        if (objetivo != 1)
         {
-            cDia = d1 * 2 + d2;
-            d1 = d2;
-            d2 = cDia;
-            dias++;
+            while (cDia < objetivo)
+            {
+                cDia = d1 * 2 + d2;
+                d1 = d2;
+                d2 = cDia;
+                dias++;
+            }
+            cout << dias << "\n";
         }
-        cout << dias << "\n";
     }
     return 0;
 }
