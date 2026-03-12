@@ -1,36 +1,44 @@
 #include <iostream>
-#include <list>
-#include <algorithm>
-#include <string>
-#include <map>
 #include <vector>
-#include <sstream>
-
 using namespace std;
-// double linked list with struct or whatever but using classes
+
 int main()
 {
     int nLines;
     cin >> nLines;
     for (int i = 0; i < nLines; i++)
     {
-        int objetivo;
+        double objetivo;
         cin >> objetivo;
-        int cDia = 0;
-        int d1 = 1;
-        int d2 = 1;
-        int dias = 1;
-        if (objetivo != 1)
+        double accDia = 2;
+        double dias = 1;
+        double d1, d2;
+        d1 = 1;
+        d2 = 1;
+
+        if (objetivo == 1)
+
+            cout << dias << "\n";
+
+        else if (objetivo == 2)
+
+            cout << dias + 1 << "\n";
+
+        else
         {
-            while (cDia < objetivo)
+            dias = 2;
+            do
             {
-                cDia = d1 * 2 + d2;
-                d1 = d2;
-                d2 = cDia;
+                int dactual = d2 * 2 + d1;
+                accDia += dactual;
+                d2 = d1;
+                d1 = dactual;
                 dias++;
-            }
+
+            } while (accDia < objetivo);
             cout << dias << "\n";
         }
     }
+
     return 0;
 }
