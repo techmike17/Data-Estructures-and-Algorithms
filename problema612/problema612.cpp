@@ -17,7 +17,7 @@ int numPuntosCirculos(int radio, int x2, int y2)
     int y1 = 0;
     int res = 0;
     double distance = 0;
-    while (true)
+    while (radio > 0)
     {
         distance = euclideanDistance(x1, y1, x2, y2);
         if (distance <= radio)
