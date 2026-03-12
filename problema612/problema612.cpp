@@ -25,26 +25,15 @@ int numPuntosCirculos(int radio, int x2, int y2)
         // Δy = y2 - y1  (punto - centro)
         // Δx = x2 - x1  (punto - centro)
         if ((y2 - y1 == x2 - x1) || (y2 - y1 == -x2 + x1)) // el punto cae en una diagonal por lo que se detiene la búsqueda
-        {
             break;
-        }
         if ((y2 - y1 > x2 - x1) && (y2 - y1 > -x2 + x1)) // Comparamos con las diagonales, por lo que si está por encima de las dos diagonales de pendiente +-1 hay que ir hacia arriba
-        {
             y1 += radio;
-        }
         else if ((y2 - y1 < x2 - x1) && (y2 - y1 < -x2 + x1)) // si está por debajo de ambas diagonales hay que ir hacia abajo
-        {
             y1 -= radio;
-        }
         else if (((y2 - y1 > x2 - x1) && (y2 - y1 < -x2 + x1))) // si está por encima de pendien +1 pero por debajo de pendiente -1 izquierda
-        {
             x1 -= radio;
-        }
         else // por encima de pendiente -1 pero por debajo de pendiente +1
-        {
             x1 += radio;
-        }
-
         radio /= 2;
     }
     return res;
