@@ -1,35 +1,55 @@
 #include <iostream>
-#include <list>
-#include <algorithm>
 #include <string>
-#include <map>
-#include <vector>
-#include <sstream>
+#include <iomanip>
 
 using namespace std;
 
-string horaReflejada(string hor, string min)
+void horaReflejada(int hor, int min)
 {
-    int minutos[58];
-    for (int i = 0; i < 60; i++)
+    int hReflex = 0;
+    switch (hor)
     {
-        minutos[i] = i;
+    case 1:
+        hReflex = 10;
+        break;
+    case 2:
+        hReflex = 9;
+        break;
+    case 3:
+        hReflex = 8;
+        break;
+    case 4:
+        hReflex = 7;
+        break;
+    case 5:
+        hReflex = 6;
+        break;
+    case 6:
+        hReflex = 5;
+        break;
+    case 7:
+        hReflex = 4;
+        break;
+    case 8:
+        hReflex = 3;
+        break;
+    case 9:
+        hReflex = 2;
+        break;
+    case 10:
+        hReflex = 1;
+        break;
+    case 11:
+        hReflex = 12;
+        break;
+    case 12:
+        hReflex = 11;
+        break;
     }
-    int horas[12];
-    for (int i = 1; i <= 12; i++)
-    {
-        horas[i] = i;
-    }
-    if (hor == "12" && min == "00" || hor == "06" && min == "00")
-    {
-        cout << hor << ':' << min;
-    }
-    int m = stoi(min);
-    int h = stoi(hor);
-    if (m < 30)
-    {
-
-    }
+    if (min == 0 && hor != 12 && hor != 6)
+        hReflex++;
+    int mReflex = 60 - min;
+    cout << std::setw(2) << std::setfill('0') << hReflex % 12 << ':' << std::setw(2) << std::setfill('0') << mReflex % 60 << '\n';
 }
 
 int main()
@@ -38,7 +58,7 @@ int main()
     cin >> nLines;
     for (int i = 0; i < nLines; i++)
     {
-        string horas, min;
+        int horas, min;
         char colon;
         cin >> horas >> colon >> min;
         horaReflejada(horas, min);
