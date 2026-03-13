@@ -46,10 +46,13 @@ void horaReflejada(int hor, int min)
         hReflex = 11;
         break;
     }
-    if (min == 0 && hor != 12 && hor != 6)
+    if (min == 0)
         hReflex++;
+
+    if (hReflex == 13)
+        hReflex = 1;
     int mReflex = 60 - min;
-    cout << std::setw(2) << std::setfill('0') << hReflex % 12 << ':' << std::setw(2) << std::setfill('0') << mReflex % 60 << '\n';
+    cout << std::setw(2) << std::setfill('0') << hReflex << ':' << std::setw(2) << std::setfill('0') << mReflex % 60 << '\n';
 }
 
 int main()
