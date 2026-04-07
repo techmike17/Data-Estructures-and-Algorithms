@@ -7,9 +7,9 @@ using namespace std;
 
 int main()
 {
-    int num;
-    int acum = 0;
-    int last;
+    double num;
+    double acum = 0;
+    double last;
 
     cin >> num;
     while (num)
